@@ -1,0 +1,246 @@
+/* 
+Project Title: Office of International Affairs (OIA) Event Manager
+Course Number: ISMG 6080 001
+Course Title: Database Management Systems
+Semester: Spring
+Year: 2018 
+Developer Name: Karikalan Rajendran 
+Oracle Account ID: ORA15PRJ
+*/  
+
+CREATE TABLE CLUB(
+ClubName varchar2(50),
+Descrip varchar2(500),
+Branch varchar2(30),
+Categry varchar2(30)
+);
+
+CREATE TABLE MEMBERSHIP(
+Membership# number(20),
+Designation varchar2(30),
+ClubName varchar2(50)
+);
+
+CREATE TABLE MEMBERSHIP_HISTORY(
+History# number(20),
+StartDate date,
+EndDate date,
+Membership# number(20),
+StudentID number(9)
+);
+
+CREATE TABLE ORGANIZATION_EVENTS(
+EventName varchar2(50),
+EntryFee number(3),
+MaxiCount number(5),
+Descrip varchar2(500), 
+Theme varchar2(30),
+Categry varchar2(30),
+ApprovedBy varchar2(8)
+);
+
+CREATE TABLE STAFF(
+Staff# varchar2(8),
+StaffFN varchar2(50),
+StaffLN varchar2(50),
+PhoneNumber number(10),
+Email varchar2(50),
+YearJoined number(4)
+);
+
+CREATE TABLE STUDENT(
+StudentID number(9),
+StudentFN varchar2(50),
+StudentLN varchar2(50),
+PhoneNumber number(10),
+Email varchar2(50),
+Gender varchar2(1)
+);
+
+CREATE TABLE UPCOMING_EVENTS(
+UpcomingEvent# number(20),
+EventDate date,
+StartTime varchar2(12), 
+EndTime varchar2(12), 
+Coordinator number(9),
+EventName varchar2(50),
+Venue varchar2(12)
+);
+
+CREATE TABLE VENUE(
+Venue# varchar2(12),
+Capacity number(5),
+VSize varchar2(3),
+Address varchar2(500)
+);
+
+
+ALTER TABLE CLUB
+ADD CONSTRAINT CLUB_ClubName_PK PRIMARY KEY(ClubName);
+
+ALTER TABLE MEMBERSHIP
+ADD CONSTRAINT MEMBERSHIP_Membership#_PK PRIMARY KEY(Membership#);
+
+ALTER TABLE MEMBERSHIP_HISTORY
+ADD CONSTRAINT MEMBERSHIP_H_History#_PK PRIMARY KEY(History#);
+
+ALTER TABLE ORGANIZATION_EVENTS
+ADD CONSTRAINT ORGANIZATION_E_EventName_PK PRIMARY KEY(EventName);
+
+ALTER TABLE STAFF
+ADD CONSTRAINT STAFF_Staff#_PK PRIMARY KEY(Staff#);
+
+ALTER TABLE STUDENT
+ADD CONSTRAINT STUDENT_StudentID_PK PRIMARY KEY(StudentID);
+
+ALTER TABLE UPCOMING_EVENTS
+ADD CONSTRAINT UPCOMING_UpcomingEvent#_PK PRIMARY KEY(UpcomingEvent#);
+
+ALTER TABLE VENUE
+ADD CONSTRAINT VENUE_Venue# PRIMARY KEY(Venue#);
+
+
+ALTER TABLE Membership
+ADD CONSTRAINT Membership_CustId_FK FOREIGN KEY(CustId)REFERENCES Customer(CustId);
+
+ALTER TABLE Payment
+ADD CONSTRAINT Payment_LoginID_FK FOREIGN KEY(LoginID)REFERENCES Membership(LoginID);
+
+ALTER TABLE Car_Details
+ADD CONSTRAINT CDetails_LocationID_FK FOREIGN KEY(LocationID)REFERENCES Rental_Location(Rental_Location_Id);
+
+ALTER TABLE Reservation
+ADD (CONSTRAINT Reservation_CustId_FK FOREIGN KEY(CustId)REFERENCES Customer(CustId),
+    CONSTRAINT Reservation_VIN_FK FOREIGN KEY(VIN)REFERENCES Car_Details(VIN),
+    CONSTRAINT Reservation_InsuranceId_FK FOREIGN KEY(InsuranceId)REFERENCES Insurance(InsuranceId));
+
+ALTER TABLE Car_Insurance
+ADD (CONSTRAINT CInsurance_VIN_FK FOREIGN KEY(VIN)REFERENCES Car_Details(VIN),
+     CONSTRAINT CInsurance_InsuranceId_FK FOREIGN KEY(InsuranceId)REFERENCES Insurance(InsuranceId));
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+ALTER TABLE MEMBERSHIP
+ADD CONSTRAINT MEMBERSHIP_ClubName_FK FOREIGN KEY(ClubName)REFERENCES CLUB(ClubName);
+
+ALTER TABLE MEMBERSHIP_HISTORY 
+ADD CONSTRAINT MEMBERSHIP_H_Membership#_FK FOREIGN KEY(Membership#)REFERENCES MEMBERSHIP(Membership#);
+
+ALTER TABLE MEMBERSHIP_HISTORY
+ADD CONSTRAINT MEMBERSHIP_H_StudentID_FK FOREIGN KEY(StudentID)REFERENCES STUDENT(StudentID);
+
+ALTER TABLE ORGANIZATION_EVENTS
+ADD CONSTRAINT ORGANIZATION_E_ApprovedBy_FK  FOREIGN KEY(ApprovedBy)REFERENCES STAFF(Staff#);
+
+ALTER TABLE UPCOMING_EVENTS
+ADD CONSTRAINT UPCOMING_E_Coordinator_FK FOREIGN KEY(Coordinator)REFERENCES STUDENT(StudentID);
+
+ALTER TABLE UPCOMING_EVENTS
+ADD CONSTRAINT UPCOMING_E_EventName_FK FOREIGN KEY(EventName)REFERENCES ORGANIZATION_EVENTS(EventName);
+
+ALTER TABLE UPCOMING_EVENTS
+ADD CONSTRAINT UPCOMING_E_Venue_FK FOREIGN KEY(Venue)REFERENCES VENUE(Venue#);
+
+INSERT INTO CLUB VALUES ('Football Union', 'Club 4 does this and this', 'Sports', 'Sports');
+INSERT INTO CLUB VALUES ('Indian Student Association',	'Club 1 does this and this',	'Public Affairs',	'Cultural');
+INSERT INTO CLUB VALUES ('Information System Association',	'Club 2 does this and this',	'Information Systems',	'Career');
+INSERT INTO CLUB VALUES ('Lynx Motor Sport',	'Club 5 does this and this',	'Mechanical Engineering',	'Sports');
+INSERT INTO CLUB VALUES ('Business Student Network',	'Club 3 does this and this', 'Marketing',	'Career');
+
+INSERT INTO STAFF VALUES ('BR144646',	'Rose',	'Marry',7205353535,	'rose.marry@ucdenver.edu',2018);
+INSERT INTO STAFF VALUES ('DR143363',	'Harish',	'Sekar',3206646446,	'harish.sekar@ucdenver.edu',2006);
+INSERT INTO STAFF VALUES ('HR424244',	'Bradley',	'Cooper',3204646466,	'bradley.cooper@ucdenver.edu',2014);
+INSERT INTO STAFF VALUES ('MG146678',	'Jiban',	'Kuntiyala',4207888882,	'jiban.kuntiyala@ucdenver.edu',2016);
+INSERT INTO STAFF VALUES ('MG244243',	'Susan',	'Raj',4205353535,	'susan.raj@ucdenver.edu',2012);
+INSERT INTO STAFF VALUES ('PR131345',	'Jahangir',	'Kareeme',7204242424,	'jahangir.kareeme@ucdenver.edu',2017);
+
+INSERT INTO STUDENT VALUES (107245532,	'Sushmitha',	'Pathak',3206464646,	'sushmitha.pathak@ucdenver.edu',	'f');
+INSERT INTO STUDENT VALUES (107245638,	'Gopinath',	'Raju',3204504568,	'gopinath.raju@ucdenver.edu',	'm');
+INSERT INTO STUDENT VALUES (107345678,	'Arjith',	'Singh',4205677845,	'arjith.singh@ucdenver.edu',	'm');
+INSERT INTO STUDENT VALUES (107347569,	'Virat',	'Kholi',3204678906,	'virat.kholi@ucdenver.edu',	'm');
+INSERT INTO STUDENT VALUES (107422442,	'Hanushya',	'Christy',3205436646,	'hanushya.christy@ucdenver.edu',	'f');
+INSERT INTO STUDENT VALUES (107456788,	'Shane',	'Watson',7203535535,	'shane.watson@ucdenver.edu',	'm');
+INSERT INTO STUDENT VALUES (107467890,	'Raj Kumar',	'Sundaresan',7203456886,	'rajkumar.sundaresan@ucdenver.edu',	'm');
+INSERT INTO STUDENT VALUES (107467899,	'Irfan',	'Pathan',3205464644,	'irfan.pathan@ucdenver.edu',	'm');
+INSERT INTO STUDENT VALUES (107517834,	'Umesh',	'Yadhav',7206788940,	'umesh.yadhav@ucdenver.edu',	'm');
+INSERT INTO STUDENT VALUES (107624244,	'Leema',	'Jhon',6794242425,	'leema.jhon@ucdenver.edu', 'f');
+INSERT INTO STUDENT VALUES (107839393,	'Jhanani',	'Iyer',7204546465,	'jhanani.iyer@ucdenver.edu', 'f');
+INSERT INTO STUDENT VALUES (107990023,	'Bravo',	'Dayane',6794242424,	'bravo.dayane@ucdenver.edu', 'm');
+
+INSERT INTO VENUE VALUES ('BU1200',200,	'LRG',	'210 Larimer Street');
+INSERT INTO VENUE VALUES ('BU1600',80,	'SML',	'210 Larimer Street');
+INSERT INTO VENUE VALUES ('CUDN4567',120,	'MED',	'678 GALWAY AVENUE');
+INSERT INTO VENUE VALUES ('KING2347',300,	'LRG',	'78 east denver');
+INSERT INTO VENUE VALUES ('NRTH1235',200,	'LRG',	'456 WEST ST');
+INSERT INTO VENUE VALUES ('PLZA2345',80,	'SML',	'67 west 14th avenue');
+
+INSERT INTO MEMBERSHIP VALUES (1,	'President',	'Indian Student Association');
+INSERT INTO MEMBERSHIP VALUES (2,	'Treasurer',	'Indian Student Association');
+INSERT INTO MEMBERSHIP VALUES (3,	'Vice President',	'Indian Student Association');
+INSERT INTO MEMBERSHIP VALUES (4,	'Officer',	'Indian Student Association');
+INSERT INTO MEMBERSHIP VALUES (5,	'President',	'Information System Association');
+INSERT INTO MEMBERSHIP VALUES (6,	'Treasurer',	'Information System Association');
+INSERT INTO MEMBERSHIP VALUES (7,	'Vice President',	'Information System Association');
+INSERT INTO MEMBERSHIP VALUES (8,	'Officer',	'Information System Association');
+INSERT INTO MEMBERSHIP VALUES (9,	'President',	'Business Student Network');
+INSERT INTO MEMBERSHIP VALUES (10,	'Treasurer',	'Business Student Network');
+INSERT INTO MEMBERSHIP VALUES (11,	'Vice President',	'Business Student Network');
+INSERT INTO MEMBERSHIP VALUES (12,	'Officer',	'Business Student Network');
+INSERT INTO MEMBERSHIP VALUES (13, 'President',	'Football Union');
+INSERT INTO MEMBERSHIP VALUES (14,	'Treasurer',	'Football Union');
+INSERT INTO MEMBERSHIP VALUES (15,	'Vice President',	'Football Union');
+INSERT INTO MEMBERSHIP VALUES (16,	'Officer',	'Football Union');
+
+INSERT INTO MEMBERSHIP_HISTORY VALUES (1,	TO_DATE('12-Nov-17','DD-MON-YYYY'),	TO_DATE('26-Apr-19','DD-MON-YYYY'),16,107345678);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (2,	TO_DATE('05-Jan-17','DD-MON-YYYY'),	TO_DATE('22-Mar-19','DD-MON-YYYY'),1,107456788);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (3,	TO_DATE('18-Jul-17','DD-MON-YYYY'),	TO_DATE('25-Jan-20','DD-MON-YYYY'),3,107839393);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (4,	TO_DATE('23-Aug-16','DD-MON-YYYY'),	TO_DATE('31-Dec-17','DD-MON-YYYY'),13,107422442);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (5,	TO_DATE('09-Jan-18','DD-MON-YYYY'),	TO_DATE('26-Jul-19','DD-MON-YYYY'),13,107467899);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (6,	TO_DATE('13-Nov-16','DD-MON-YYYY'),	TO_DATE('20-Nov-17','DD-MON-YYYY'),4,107467899);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (7,	TO_DATE('18-Sep-17','DD-MON-YYYY'),	TO_DATE('25-May-19','DD-MON-YYYY'),3,107990023);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (8,	TO_DATE('17-Apr-18','DD-MON-YYYY'),	TO_DATE('29-Jun-19','DD-MON-YYYY'),4,107517834);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (9,	TO_DATE('24-Nov-18','DD-MON-YYYY'),	NULL,14,107245532);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (10,	TO_DATE('27-Oct-18','DD-MON-YYYY'),	TO_DATE('23-Mar-19','DD-MON-YYYY'),16,107245638);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (11,	TO_DATE('17-Nov-18','DD-MON-YYYY'),	TO_DATE('26-Jan-19','DD-MON-YYYY'),12,107345678);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (12,	TO_DATE('09-Apr-18','DD-MON-YYYY'),	NULL,4,107347569);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (13,	TO_DATE('20-Sep-16','DD-MON-YYYY'),	TO_DATE('27-Nov-17','DD-MON-YYYY'),5,107456788);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (14,	TO_DATE('25-Sep-17','DD-MON-YYYY'),	TO_DATE('27-Oct-18','DD-MON-YYYY'),4,107467890);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (15,	TO_DATE('25-Jun-17','DD-MON-YYYY'),	TO_DATE('23-Feb-19','DD-MON-YYYY'),9,107624244);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (16,	TO_DATE('26-Feb-17','DD-MON-YYYY'),	TO_DATE('31-Jul-19','DD-MON-YYYY'),10,107839393);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (17,	TO_DATE('27-Mar-17','DD-MON-YYYY'),	TO_DATE('28-Jun-19','DD-MON-YYYY'),13,107990023);
+INSERT INTO MEMBERSHIP_HISTORY VALUES (18,	TO_DATE('18-Dec-17','DD-MON-YYYY'),	NULL,8,107517834);
+
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Career fair',0,500,	'Event 9  is about this and this',	'',	'Career','BR144646');
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Christmas',0,300,	'Event 8  is about this and this',	'Santa',	'Festival','MG244243');
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Cultural Fest',0,50,	'Event 4  is about this and this',	'Unity',	'Cultural','PR131345');
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Diwali',0,50,	'Event 2  is about this and this',	'Lights',	'Festival','DR143363');	
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Hawaian Feast',0,100,	'Event 6  is about this and this',	'',	'Cultural','HR424244');	
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Holi',	0,200,	'Event 1  is about this and this',	'Colors',	'Festival','BR144646');	
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Rangoli',20,50,	'Event 7  is about this and this',	'',	'Cultural','DR143363');	
+INSERT INTO ORGANIZATION_EVENTS VALUES ('Rockies Night',0,120,	'Event 5  is about this and this',	'',	'Sports','HR424244');	
+INSERT INTO ORGANIZATION_EVENTS VALUES ('VSA Gala',40,300,	'Event 3 is about this and this',	'Nature Conservation',	'Fundraising','PR131345');
+
+INSERT INTO UPCOMING_EVENTS VALUES (1,	TO_DATE('14-Mar-18','DD-MON-YYYY'),	'8:00 AM',	'5:00 PM',107345678,	'Career fair',	'KING2347');
+INSERT INTO UPCOMING_EVENTS VALUES (2,	TO_DATE('25-Dec-17','DD-MON-YYYY'),	'10:00 AM',	'5:00 PM',107467890,	'Christmas',	'KING2347');
+INSERT INTO UPCOMING_EVENTS VALUES (3,	TO_DATE('31-Jan-18','DD-MON-YYYY'),	'11:00 AM',	'2:00 PM',107456788,	'Cultural Fest',	'BU1600');
+INSERT INTO UPCOMING_EVENTS VALUES (4,	TO_DATE('20-Nov-17','DD-MON-YYYY'),	'5:00 PM',	'9:00 PM',107245532,	'Diwali',	'PLZA2345');
+INSERT INTO UPCOMING_EVENTS VALUES (5,	TO_DATE('09-Apr-18','DD-MON-YYYY'),	'8:00 AM',	'12:00 PM',107624244,	'Hawaian Feast',	'CUDN4567');
+INSERT INTO UPCOMING_EVENTS VALUES (6,	TO_DATE('20-Jan-18','DD-MON-YYYY'),	'3:00 PM',	'5:00 PM',107839393,	'Holi',	'NRTH1235');
+INSERT INTO UPCOMING_EVENTS VALUES (7,	TO_DATE('23-Jan-18','DD-MON-YYYY'),	'8:00 AM',	'11:00 AM',107990023,	'Rangoli',	'BU1600');
+INSERT INTO UPCOMING_EVENTS VALUES (8,	TO_DATE('09-Apr-18','DD-MON-YYYY'),	'1:00 PM',	'6:00 PM',107990023,	'Rockies Night',	'CUDN4567');
+INSERT INTO UPCOMING_EVENTS VALUES (9,	TO_DATE('15-Feb-18','DD-MON-YYYY'),	'5:00 PM',	'9:00 PM',107245532,	'VSA Gala',	'KING2347');
+
+commit;
+
